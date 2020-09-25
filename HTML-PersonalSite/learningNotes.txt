@@ -1,0 +1,2 @@
+1. Meta Tags: The search engines scrapes the html code for websites and looks
+for the meta tags to find what the website is about. 
