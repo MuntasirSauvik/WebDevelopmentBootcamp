@@ -60,7 +60,12 @@ app.post("/", function(req, res) {
   request.write(jsonData);
   request.end();
 
-});
+})
+
+app.post("/failure", function(req,res){
+  console.log("Try again pressed");
+  res.redirect("/");
+})
 
 app.listen(3000, function() {
   console.log("Server is running on port 3000.")
