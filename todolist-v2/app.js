@@ -12,8 +12,11 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
+const MONGO_DEFAULT = "mongodb+srv://admin-muntasir:test123@cluster0.dvkjh.mongodb.net/todolistDB";
+let mongo_url = process.env.MONGO_URL || MONGO_DEFAULT;
 
-mongoose.connect("mongodb+srv://admin-muntasir:test123@cluster0.dvkjh.mongodb.net/todolistDB", {useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(mongo_url, {useNewUrlParser: true, useUnifiedTopology: true });
+console.log("Connecting to MongoDB: " + mongo_url);
 
 const itemsSchema = {
   name: String
