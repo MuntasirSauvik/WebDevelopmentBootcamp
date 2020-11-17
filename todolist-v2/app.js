@@ -1,4 +1,4 @@
-//jshint esversion:6
+//jshint esvertodolist-v20sion:6
 
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -11,6 +11,7 @@ app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
+
 
 mongoose.connect("mongodb+srv://admin-muntasir:test123@cluster0.dvkjh.mongodb.net/todolistDB", {useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -52,7 +53,7 @@ app.get("/", function(req, res) {
         if (err) {
           console.log(err);
         } else {
-          console.log("Successfully saved default items to DB.");
+          console.log("Successfully savevd default items to DB.");
         }
       });
       res.redirect("/");
@@ -132,7 +133,7 @@ app.post("/delete", function(req, res){
 });
 
 
-app.get("/about", function(req, res) {
+app.get("/about", function(req, res){
   res.render("about");
 });
 
@@ -146,6 +147,6 @@ app.get("/about", function(req, res) {
 // });
 
 
-app.listen(3000, function(){
+app.listen(3000, function() {
   console.log("Server started on port 3000");
 });
