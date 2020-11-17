@@ -4,6 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const _ = require("lodash");
+require('dotenv').config();
 
 const app = express();
 
@@ -12,7 +13,8 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-const MONGO_DEFAULT = "mongodb+srv://admin-muntasir:test123@cluster0.dvkjh.mongodb.net/todolistDB";
+//const MONGO_DEFAULT = "mongo://127.0.0.1:27017/database_name";
+const MONGO_DEFAULT=""
 let mongo_url = process.env.MONGO_URL || MONGO_DEFAULT;
 
 mongoose.connect(mongo_url, {useNewUrlParser: true, useUnifiedTopology: true });
