@@ -4,6 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const _ = require("lodash");
+var loginFlag = 0;
 require('dotenv').config();
 
 const app = express();
@@ -53,12 +54,13 @@ app.get("/", function(req, res) {
 
   Item.find({}, function(err, foundItems){
 
-    if (foundItems.length === 0) {
+    if (foundItems.length === 0 && loginFlag == 0) {
       Item.insertMany(defaultItems, function(err){
         if (err) {
           console.log(err);
         } else {
           console.log("Successfully savevd default items to DB.");
+          loginFlag = 1;
         }
       });
       res.redirect("/");
