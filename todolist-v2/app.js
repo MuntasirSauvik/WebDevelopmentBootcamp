@@ -22,22 +22,26 @@ mongoose.connect(mongo_url, {useNewUrlParser: true, useUnifiedTopology: true });
 console.log("Connecting to MongoDB: " + mongo_url);
 
 const itemsSchema = {
-  name: String
+  name: String,
+  completed: Boolean
 };
 
 const Item = mongoose.model("Item", itemsSchema);
 
 
 const item1 = new Item({
-  name: "Welcome to your todolist!"
+  name: "Welcome to your todolist!",
+  completed: false
 });
 
 const item2 = new Item({
-  name: "Hit the + button to add a new item."
+  name: "Hit the + button to add a new item.",
+  completed: false
 });
 
 const item3 = new Item({
-  name: "<-- Hit this to delete an item."
+  name: "<-- Hit this to delete an item.",
+  completed: false
 });
 
 const defaultItems = [item1, item2, item3];
@@ -139,6 +143,43 @@ app.post("/delete", function(req, res){
 
 });
 
+app.post("/markComplete", function(req, res){
+  const checkedItemId = req.body.itemId;
+  const completed = !!req.body.completed;  // either true/false
+  const listName = req.body.listName;
+  const update = {completed: completed};
+
+  if (listName === "Today") {
+    Item.findOneAndUpdate({_id: checkedItemId}, update, function(err,foundList){
+      if (!err) {
+        console.log("foundList: "+ foundList);
+        res.redirect("/");
+      }
+    });
+  } else {
+    List.findOne({name: listName}, function(err, foundList){
+      if (!err){
+        foundList.items.forEach((el) => {
+            if(checkedItemId == el._id) {
+              el.completed = completed;
+            }
+        });
+        List.findOneAndUpdate({name: listName}, foundList, function(err, foundList2){
+          if (!err) {
+            res.redirect("/" + listName);
+          }
+        });
+      }
+    });
+  }
+
+});
+
+
+
+
+
+
 
 app.get("/about", function(req, res){
   res.render("about");
@@ -154,6 +195,6 @@ app.get("/about", function(req, res){
 // });
 
 
-app.listen(3000, function() {
-  console.log("Server started on port 3000");
+app.listen(3001, function() {
+  console.log("Server started on port 3001");
 });
