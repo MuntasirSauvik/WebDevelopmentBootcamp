@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
+//require('dotenv').config();
+
 // const MONGO_DEFAULT = "mongo://127.0.0.1:27017/database_name";
 const MONGO_DEFAULT="";
 let mongo_url = process.env.MONGO_URL || MONGO_DEFAULT;
