@@ -18,7 +18,6 @@ const Item = mongoose.model("Item", itemsSchema);
 
 const listSchema = {
   name: String,
-  initialized: {type: Boolean, default: false},
   items: [itemsSchema]
 };
 

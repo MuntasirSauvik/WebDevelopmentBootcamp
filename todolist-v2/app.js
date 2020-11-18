@@ -22,31 +22,13 @@ const defaultItems = defaultStrings.map((el) => {
 });
 
 app.get("/", function(req, res) {
-
   res.redirect("/home");
-  // Item.find({}, function(err, foundItems){
-  //
-  //   if (foundItems.length === 0 && loginFlag == 0) {
-  //     Item.insertMany(defaultItems, function(err){
-  //       if (err) {
-  //         console.log(err);
-  //       } else {
-  //         console.log("Successfully savevd default items to DB.");
-  //         loginFlag = 1;
-  //       }
-  //     });
-  //     res.redirect("/");
-  //   } else {
-  //     res.render("list", {listTitle: "Today", newListItems: foundItems});
-  //   }
-  // });
-
 });
 
 app.get("/:customListName", function(req, res){
   const customListName = _.capitalize(req.params.customListName);
 
-  List.findOne({name: customListName}, function(err, foundList){
+  List.findOne({name: customListName}, function(err, foundList) {
     if (!err){
       if (!foundList){
         //Create a new list
@@ -108,16 +90,7 @@ app.post("/markComplete", function(req, res){
   const checkedItemId = req.body.itemId;
   const completed = !!req.body.completed;  // either true/false
   const listName = req.body.listName;
-  const update = {completed: completed};
 
-  if (listName === "Today") {
-    Item.findOneAndUpdate({_id: checkedItemId}, update, function(err,foundList){
-      if (!err) {
-        console.log("foundList: "+ foundList);
-        res.redirect("/");
-      }
-    });
-  } else {
     List.findOne({name: listName}, function(err, foundList){
       if (!err){
         foundList.items.forEach((el) => {
@@ -132,8 +105,6 @@ app.post("/markComplete", function(req, res){
         });
       }
     });
-  }
-
 });
 
 app.get("/about", function(req, res){
