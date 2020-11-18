@@ -66,22 +66,26 @@ app.post("/addItem", function(req, res){
   }
 });
 
+function findOneAndUpdate(listName, foundList, res) {
+  List.findOneAndUpdate({name: listName}, foundList, function(err, foundList2){
+    if (!err) {
+      res.redirect("/" + listName);
+    }
+  });
+}
+
 app.post("/delete", function(req, res){
   const listName = req.body.listName;
   List.findOne({name: listName}, function(err, foundList){
     if (!err){
       const newList = [];
       foundList.items.forEach((el) => {
-          if(!el.completed) {
-            newList.push(el);
-          }
-      });
-      foundList.items = newList;
-      List.findOneAndUpdate({name: listName}, foundList, function(err, foundList2){
-        if (!err) {
-          res.redirect("/" + listName);
+        if(!el.completed) {
+          newList.push(el);
         }
       });
+      foundList.items = newList;
+      findOneAndUpdate(listName, foundList, res);
     }
   });
 });
@@ -98,11 +102,7 @@ app.post("/markComplete", function(req, res){
               el.completed = completed;
             }
         });
-        List.findOneAndUpdate({name: listName}, foundList, function(err, foundList2){
-          if (!err) {
-            res.redirect("/" + listName);
-          }
-        });
+        findOneAndUpdate(listName, foundList, res);
       }
     });
 });
